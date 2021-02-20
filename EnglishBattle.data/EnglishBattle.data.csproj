@@ -75,6 +75,11 @@
     <Compile Include="Question.cs">
       <DependentUpon>EnglishBattleModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Services\JoueurService.cs" />
+    <Compile Include="Services\PartieService.cs" />
+    <Compile Include="Services\QuestionService.cs" />
+    <Compile Include="Services\VerbeService.cs" />
+    <Compile Include="Services\VilleService.cs" />
     <Compile Include="Verbe.cs">
       <DependentUpon>EnglishBattleModel.tt</DependentUpon>
     </Compile>
@@ -110,5 +115,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
