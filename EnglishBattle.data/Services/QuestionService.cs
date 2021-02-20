@@ -8,5 +8,6 @@ namespace EnglishBattle.data.Services
 {
     class QuestionService
     {
+
     }
 }
