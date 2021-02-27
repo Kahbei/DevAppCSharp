@@ -8,9 +8,14 @@ namespace EnglishBattleApp.Controllers
 {
     public class QuestionController : Controller
     {
-        // GET: Question
         public ActionResult Index()
         {
+            return View();
+        }
+
+        public ActionResult Question()
+        {
+            ViewBag.VerbInfinitif = "Guru Project Infinity !";
             return View();
         }
     }
