@@ -32,5 +32,15 @@ namespace EnglishBattleApp.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Le mot de passe de correspond pas")]
         public string ConfirmPassword { get; set; }
+
+        // niveau 
+        [Required]
+        [Display(Name = "Niveau")]
+        public string Niveau { get; set; }
+
+        // ville
+        [Required]
+        [Display(Name = "Ville")]
+        public string Ville { get; set; }
     }
 }
