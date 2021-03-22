@@ -17,6 +17,20 @@ namespace EnglishBattleApp.Controllers
             return View();
         }
 
+        public ActionResult Question()
+        {
+            var joueur = (Joueur)Session["joueur"];
+            PartieService partieService = new PartieService(new EnglishBattle.data.EnglishBattleEntities());
+            Partie partie = new Partie
+            {
+                idJoueur = joueur.id,
+                score = 0,
+            };
+            partieService.InsertPartie(partie);
+
+            return View();
+        }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
