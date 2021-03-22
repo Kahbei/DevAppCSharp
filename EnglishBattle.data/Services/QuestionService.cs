@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace EnglishBattle.data.Services
 {
-    class QuestionService
+    public class QuestionService
     {
         private EnglishBattleEntities context;
+
+        public QuestionService(EnglishBattleEntities context)
+        {
+            this.context = context;
+        }
 
         /// <summary>
         /// Get a Question following the id picked

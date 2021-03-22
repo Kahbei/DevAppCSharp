@@ -58,7 +58,7 @@ namespace EnglishBattleApp.Controllers
             {
                 JoueurService joueurService = new JoueurService(new EnglishBattle.data.EnglishBattleEntities());
                 VilleService villeService = new VilleService(new EnglishBattle.data.EnglishBattleEntities());
-                Ville ville = villeService.GetVilleItem(model.Ville);
+                Ville ville = villeService.GetVilleItem(int.Parse(model.Ville));
 
                 Joueur joueur = new Joueur
                 {
@@ -66,7 +66,7 @@ namespace EnglishBattleApp.Controllers
                     prenom = model.Prenom,
                     email = model.Email,
                     motDePasse = model.Password,
-                    niveau = model.Niveau,
+                    //niveau = model.Niveau,
                     Ville = ville,
             };
 
