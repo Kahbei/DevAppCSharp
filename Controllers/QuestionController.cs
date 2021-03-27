@@ -19,14 +19,34 @@ namespace EnglishBattleApp.Controllers
 
         public ActionResult Question()
         {
+
             var joueur = (Joueur)Session["joueur"];
-            PartieService partieService = new PartieService(new EnglishBattle.data.EnglishBattleEntities());
-            Partie partie = new Partie
+            var partieEnCours = (Partie)Session["partie"];
+
+            if (joueur != null)
             {
-                idJoueur = joueur.id,
-                score = 0,
-            };
-            partieService.InsertPartie(partie);
+                // Si il n'y a pas eu de partie créer.
+                if( partieEnCours == null)
+                {
+                    // Appelle le service pour créer une nouvelle partie.
+                    PartieService partieService = new PartieService(new EnglishBattle.data.EnglishBattleEntities());
+                    Partie partie = new Partie
+                    {
+                        idJoueur = joueur.id,
+                        score = 0,
+                    };
+            
+                    partieService.InsertPartie(partie);
+
+                    Session["partie"] = partie;
+
+                    NewQuestion(partie.id);
+                }
+                else if(partieEnCours != null)
+                {
+                    NewQuestion(partieEnCours.id);
+                }
+            }
 
             return View();
         }
@@ -39,22 +59,53 @@ namespace EnglishBattleApp.Controllers
             //validation côté serveur
             if (ModelState.IsValid)
             {
-                //inscription en base de données
+                // Récupère le service
                 QuestionService questionService = new QuestionService(new EnglishBattle.data.EnglishBattleEntities());
 
-                Question question = new Question();
+                // Récupère de la valeur session contenant les informations à l'arrivée d'une question.
+                Question fromSession = (Question)Session["questionInfo"];
+                DateTime dateAnswer = DateTime.Now;
 
-                question.reponseParticipePasse = model.ParticipePasse;
-                question.reponsePreterit = model.Preterit;
+                // Objet Question qui va être insérer dans la base.
+                Question question = new Question
+                {
+                    idPartie = fromSession.idPartie,
+                    idVerbe = fromSession.idVerbe,
+                    dateEnvoie = fromSession.dateEnvoie,
+                    reponseParticipePasse = model.ParticipePasse,
+                    reponsePreterit = model.Preterit,
+                    dateReponse = dateAnswer,
+                };
 
                 questionService.InsertQuestion(question);
-
-                //pas obligatoire, c'est moi qui m'amuse !
-                ViewBag.VerbInfinitif = "Bonne réponse !";
             }
 
-            //ViewBag.VerbInfinitif = "Guru Project Infinity !";
             return View();
+        }
+
+        private int GetRandomVerb()
+        {
+            VerbeService verbeService = new VerbeService(new EnglishBattle.data.EnglishBattleEntities());
+            List<Verbe> listVerb = verbeService.GetVerbList();
+            Random rndNum = new Random();
+
+            return rndNum.Next(0, listVerb.Count + 1);
+        }
+
+        private void NewQuestion(int partieID)
+        {
+            // Initialise les données dès que la question s'affiche.
+            Question question = new Question
+            {
+                idPartie = partieID,
+                dateEnvoie = DateTime.Now,
+                idVerbe = GetRandomVerb(),
+            };
+
+            Session["questionInfo"] = question;
+
+            VerbeService verbeService = new VerbeService(new EnglishBattle.data.EnglishBattleEntities());
+            ViewBag.verbe = verbeService.GetVerbItem(question.idVerbe).baseVerbale;
         }
     }
 }

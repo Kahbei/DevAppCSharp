@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using EnglishBattle.data;
+
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -21,12 +23,16 @@
                 <li class="nav-item">@Html.ActionLink("À propos de", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                 <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                 @{
-                    if (true)
+                    var joueur = (Joueur)Context.Session["joueur"];
+                    if (joueur == null)
                     {
-                        @*<li class="nav-item">Good evening Mr. Blonde</li>*@
-                        <li class="nav-item">@Html.ActionLink("Question", "Question", "Question", new { area = "" }, new { @class = "nav-link" })</li>
                         <li class="nav-item">@Html.ActionLink("Login", "Index", "Account", new { area = "" }, new { @class = "nav-link" })</li>
                         <li class="nav-item">@Html.ActionLink("Register", "Register", "Account", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">Good evening @joueur.nom @joueur.prenom</li>
+                        <li class="nav-item">@Html.ActionLink("Question", "Question", "Question", new { area = "" }, new { @class = "nav-link" })</li>
                     }
                 }
             </ul>
