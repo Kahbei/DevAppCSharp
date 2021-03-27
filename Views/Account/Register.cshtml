@@ -6,11 +6,16 @@
 
 <h2>English Battle Inscription</h2>
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
+<!-- Nom -->
 <div class="form-horizontal">
     @*<h4>RegisterViewModel</h4>*@
     <hr />
@@ -23,6 +28,7 @@
         </div>
     </div>
 
+    <!-- Prénom -->
     <div class="form-group">
         @Html.LabelFor(model => model.Prenom, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -31,6 +37,7 @@
         </div>
     </div>
 
+    <!-- Email -->
     <div class="form-group">
         @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -39,6 +46,7 @@
         </div>
     </div>
 
+    <!-- Mdp1 -->
     <div class="form-group">
         @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -47,6 +55,7 @@
         </div>
     </div>
 
+    <!-- Mdp2 -->
     <div class="form-group">
         @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -55,35 +64,58 @@
         </div>
     </div>
 
+    <!-- Niveau -->
     <div class="form-group">
         @Html.LabelFor(model => model.Niveau, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Niveau, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Niveau, "", new { @class = "text-danger" })
-        </div>
+        <select name="niveau" id="niveau-select">
+            <option value="1">Débutant</option>
+            <option value="2">Intermédiaire</option>
+            <option value="3">Expert</option>
+        </select>
     </div>
 
-    <!-- Faire comboBox -->
-    <div class="dropdown">
-        @Html.LabelFor(model => model.Ville, htmlAttributes: new { @class = "btn btn-secondary dropdown-toggle" })
-        <div class="dropdown-menu">
-            @Html.EditorFor(model => model.Ville, new { htmlAttributes = new { @class = "dropdown-item" } })
-            @Html.ValidationMessageFor(model => model.Ville, "", new { @class = "text-danger" })
-        </div>
-    </div>
+    <!-- Villes -->
+    @using EnglishBattle.data.Services
+    @using EnglishBattle.data
+
+
 
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+        @Html.LabelFor(model => model.Ville, htmlAttributes: new { @class = "control-label col-md-2" })
+            @{
+                VilleService villeService = new VilleService(new EnglishBattle.data.EnglishBattleEntities());
+                List<Ville> ville = villeService.GetVilleList();
+
+                @Html.DropDownListFor(n => n.Ville, new SelectList(ville, "id", "nom"));
+
+            }
+    </div>
+
+        <!-- test de DropDown-->
+        <!--
+    <select name="pets" id="pet-select">
+        <option value="">--Please choose an option--</option>
+        <option value="dog">Dog</option>
+        <option value="cat">Cat</option>
+        <option value="hamster">Hamster</option>
+        <option value="parrot">Parrot</option>
+        <option value="spider">Spider</option>
+        <option value="goldfish">Goldfish</option>
+    </select>
+    -->
+        <!-- Bouton -->
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="S'inscrire" class="btn btn-default" />
+            </div>
         </div>
     </div>
-</div>
-}
+    }
 
-<div>
-    @Html.ActionLink("Connexion", "Index")
-</div>
+    <div>
+        @Html.ActionLink("Connexion", "Index")
+    </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
