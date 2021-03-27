@@ -66,7 +66,7 @@ namespace EnglishBattleApp.Controllers
                     prenom = model.Prenom,
                     email = model.Email,
                     motDePasse = model.Password,
-                    //niveau = model.Niveau,
+                    niveau = int.Parse(model.Niveau),
                     Ville = ville,
             };
 
@@ -79,6 +79,14 @@ namespace EnglishBattleApp.Controllers
             return View();
         }
         //recup des villes
+        [HttpPost]
+        public ActionResult GVille(RegisterViewModel model)
+        {
+            VilleService villeService = new VilleService(new EnglishBattle.data.EnglishBattleEntities());
+            List<Ville> ville = villeService.GetVilleList();
 
+            return View();
+
+        }
     }
 }
