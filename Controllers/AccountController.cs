@@ -57,8 +57,8 @@ namespace EnglishBattleApp.Controllers
             if (ModelState.IsValid)
             {
                 JoueurService joueurService = new JoueurService(new EnglishBattle.data.EnglishBattleEntities());
-                VilleService villeService = new VilleService(new EnglishBattle.data.EnglishBattleEntities());
-                Ville ville = villeService.GetVilleItem(int.Parse(model.Ville));
+                //VilleService villeService = new VilleService(new EnglishBattle.data.EnglishBattleEntities());
+                //Ville ville = villeService.GetVilleItem(int.Parse(model.Ville));
 
                 Joueur joueur = new Joueur
                 {
@@ -67,7 +67,7 @@ namespace EnglishBattleApp.Controllers
                     email = model.Email,
                     motDePasse = model.Password,
                     niveau = int.Parse(model.Niveau),
-                    Ville = ville,
+                    idVille = int.Parse(model.Ville)
             };
 
                 joueurService.Insert(joueur);
