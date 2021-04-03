@@ -10,6 +10,7 @@ namespace EnglishBattleApp.Controllers
     {
         public ActionResult Index()
         {
+            Response.Redirect("Account/index");
             return View();
         }
 

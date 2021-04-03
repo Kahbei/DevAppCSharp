@@ -17,7 +17,7 @@
 
 <!-- Nom -->
 <div class="form-horizontal">
-    @*<h4>RegisterViewModel</h4>*@
+    <h4>@ViewBag.erreurInscription</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
@@ -86,7 +86,7 @@
                 VilleService villeService = new VilleService(new EnglishBattle.data.EnglishBattleEntities());
                 List<Ville> ville = villeService.GetVilleList();
 
-                @Html.DropDownListFor(n => n.Ville, new SelectList(ville, "id", "nom"));
+                @Html.DropDownListFor(n => n.Ville, new SelectList(ville, "id", "nom"));    //3h30 pour trouver ca
 
             }
     </div>

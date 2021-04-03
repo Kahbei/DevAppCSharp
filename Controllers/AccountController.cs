@@ -22,11 +22,13 @@ namespace EnglishBattleApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index(LoginViewModel model)
         {
+            //si les champs sont remplis
             if (ModelState.IsValid)
             {
                 JoueurService joueurService = new JoueurService(new EnglishBattle.data.EnglishBattleEntities());
                 Joueur joueur = joueurService.GetJoueur(model.Email, model.Password);
 
+                //si l'email et le mdp correspondent
                 if (joueur != null)
                 {
                     Session["joueur"] = joueur;
@@ -36,8 +38,14 @@ namespace EnglishBattleApp.Controllers
                 {
                     // Nettoie le model
                     ModelState.Clear();
+                    ViewBag.erreurConnexion = "Erreur de connexion. Mail ou mot de passe erroné.";
                 }
 
+            }
+            //si l'email et le mdp ne sont pas bons
+            else
+            {
+                ViewBag.erreurConnexion = "Erreur de connexion. Vous devez remplir les champs.";
             }
 
             return View();
@@ -54,6 +62,7 @@ namespace EnglishBattleApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterViewModel model)
         {
+            //si les champs sont remplis
             if (ModelState.IsValid)
             {
                 JoueurService joueurService = new JoueurService(new EnglishBattle.data.EnglishBattleEntities());
@@ -68,11 +77,15 @@ namespace EnglishBattleApp.Controllers
                     motDePasse = model.Password,
                     niveau = int.Parse(model.Niveau),
                     idVille = int.Parse(model.Ville)
-            };
+                };
 
                 joueurService.Insert(joueur);
 
                 return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ViewBag.erreurInscription = "Erreur d'inscription. Vous devez remplir tous les champs.";
             }
 
             // Si on arrive ici, les données du formulaire ne sont pas valides.
@@ -87,6 +100,11 @@ namespace EnglishBattleApp.Controllers
 
             return View();
 
+        }
+
+        public ActionResult Logout()
+        {
+            return View();
         }
     }
 }

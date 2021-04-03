@@ -12,16 +12,16 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        @Html.ActionLink("Nom d'application", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        @Html.ActionLink("English Battle", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">@Html.ActionLink("Accueil", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                @*<li class="nav-item">@Html.ActionLink("Accueil", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                 <li class="nav-item">@Html.ActionLink("À propos de", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
                 @{
                     var joueur = (Joueur)Context.Session["joueur"];
                     if (joueur == null)
@@ -33,6 +33,7 @@
                     {
                         <li class="nav-item">Good evening @joueur.nom @joueur.prenom</li>
                         <li class="nav-item">@Html.ActionLink("Question", "Question", "Question", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Déconnexion", "Logout", "Account", new { area = "" }, new { @class = "nav-link" })</li>
                     }
                 }
             </ul>

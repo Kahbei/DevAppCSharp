@@ -1,18 +1,14 @@
 ﻿@model EnglishBattleApp.Models.LoginViewModel
 
-@{
-    ViewBag.Title = "Index";
-}
-
-<h2>Bienvenue sur English Battle !</h2>
+<h1>Bienvenue sur English Battle !</h1>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        @*<h4>LoginViewModel</h4>*@
-        <hr />
+        <h2>@ViewBag.erreurConnexion</h2>
+        
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
