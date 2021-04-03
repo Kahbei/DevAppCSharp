@@ -14,6 +14,11 @@ namespace EnglishBattleApp.Controllers
         // GET: Account
         public ActionResult Index()
         {
+            if(TempData["message"] != null)
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
+
             return View();
         }
 

@@ -20,27 +20,43 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 @*<li class="nav-item">@Html.ActionLink("Accueil", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                <li class="nav-item">@Html.ActionLink("À propos de", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
+            <li class="nav-item">@Html.ActionLink("À propos de", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+            <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
                 @{
                     var joueur = (Joueur)Context.Session["joueur"];
+                    Partie partie = (Partie)Context.Session["partie"];
+
                     if (joueur == null)
                     {
-                        <li class="nav-item">@Html.ActionLink("Login", "Index", "Account", new { area = "" }, new { @class = "nav-link" })</li>
                         <li class="nav-item">@Html.ActionLink("Register", "Register", "Account", new { area = "" }, new { @class = "nav-link" })</li>
                     }
                     else
                     {
-                        <li class="nav-item">Good evening @joueur.nom @joueur.prenom</li>
+                        <li class="nav-item"><span class="navbar-text">Good evening @joueur.nom @joueur.prenom</span></li>
                         <li class="nav-item">@Html.ActionLink("Question", "Question", "Question", new { area = "" }, new { @class = "nav-link" })</li>
                         <li class="nav-item">@Html.ActionLink("Déconnexion", "Logout", "Account", new { area = "" }, new { @class = "nav-link" })</li>
                     }
                 }
             </ul>
+            @{
+                if (partie != null)
+                {
+                    <li class="nav-item"><span class="navbar-text">Score : @partie.score</span></li>
+                }
+            }
         </div>
     </nav>
 
     <div class="container my-4">
+        @{
+            if (ViewBag.message != null)
+            {
+                <div class="alert alert-primary" role="alert">
+                    <h4 class="alert-heading">@ViewBag.message</h4>
+                </div>
+            }
+        }
+
         @RenderBody()
         <hr />
         <footer>
