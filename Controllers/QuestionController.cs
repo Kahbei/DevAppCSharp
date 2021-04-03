@@ -59,8 +59,9 @@ namespace EnglishBattleApp.Controllers
             //validation côté serveur
             if (ModelState.IsValid)
             {
-                // Récupère le service
+                // Récupère les services
                 QuestionService questionService = new QuestionService(new EnglishBattle.data.EnglishBattleEntities());
+                PartieService partieService = new PartieService(new EnglishBattle.data.EnglishBattleEntities());
 
                 // Récupère de la valeur session contenant les informations à l'arrivée d'une question.
                 Question fromSession = (Question)Session["questionInfo"];
@@ -77,7 +78,31 @@ namespace EnglishBattleApp.Controllers
                     dateReponse = dateAnswer,
                 };
 
+                Partie partie = (Partie)Session["partie"];
+
                 questionService.InsertQuestion(question);
+
+                // Check if the answers are good or not
+                if (isCorrectAnswers(question.idVerbe, question.reponsePreterit, question.reponseParticipePasse))
+                {
+                    ViewBag.answer = "Good Answers";
+                    partie.score++;
+                    ViewBag.score = partie.score;
+                    ViewBag.part = partie.Joueur;
+
+                    return RedirectToAction("Question", "Question");                    
+                }
+                else
+                {
+                    partieService.UpdatePartie(partie);
+
+                    Session["partie"] = null;
+
+                    ViewBag.answer = "Bad Answers";
+
+                    return RedirectToAction("Index", "Home");
+                }
+
             }
 
             return View();
@@ -89,7 +114,7 @@ namespace EnglishBattleApp.Controllers
             List<Verbe> listVerb = verbeService.GetVerbList();
             Random rndNum = new Random();
 
-            return rndNum.Next(0, listVerb.Count + 1);
+            return rndNum.Next(1, listVerb.Count + 1);
         }
 
         private void NewQuestion(int partieID)
@@ -106,6 +131,14 @@ namespace EnglishBattleApp.Controllers
 
             VerbeService verbeService = new VerbeService(new EnglishBattle.data.EnglishBattleEntities());
             ViewBag.verbe = verbeService.GetVerbItem(question.idVerbe).baseVerbale;
+        }
+
+        private bool isCorrectAnswers(int idVerb, string preterit, string partpast)
+        {
+            VerbeService verbeService = new VerbeService(new EnglishBattle.data.EnglishBattleEntities());
+            Verbe verbe = verbeService.GetVerbItem(idVerb);
+
+            return (preterit == verbe.participePasse && partpast == verbe.preterit) ? true : false ;
         }
     }
 }
