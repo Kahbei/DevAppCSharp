@@ -1,0 +1,20 @@
+﻿#Email{
+    width: 480px;
+}
+
+#Password {
+    width: 480px;
+}
+
+.centrer {
+    padding-left: 14%;
+}
+
+.viewBagErreurConnexion {
+    font-size: 20px;
+    color: red;
+}
+
+body{
+    text-align: center;
+}
