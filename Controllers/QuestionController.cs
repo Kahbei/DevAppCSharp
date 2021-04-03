@@ -44,6 +44,11 @@ namespace EnglishBattleApp.Controllers
                 }
                 else if(partieEnCours != null)
                 {
+                    if(TempData["message"] != null)
+                    {
+                        ViewBag.message = TempData["message"].ToString();
+                    }
+
                     NewQuestion(partieEnCours.id);
                 }
             }
@@ -85,10 +90,14 @@ namespace EnglishBattleApp.Controllers
                 // Check if the answers are good or not
                 if (isCorrectAnswers(question.idVerbe, question.reponsePreterit, question.reponseParticipePasse))
                 {
-                    ViewBag.answer = "Good Answers";
+                    TempData["message"] = "Good Answers";
+
                     partie.score++;
-                    ViewBag.score = partie.score;
-                    ViewBag.part = partie.Joueur;
+
+                    if(partie.score % 5 == 0)
+                    {
+                        TempData["message"] = "Good Answer ! It was the " + partie.score + " in a row !";
+                    }
 
                     return RedirectToAction("Question", "Question");                    
                 }
@@ -98,7 +107,7 @@ namespace EnglishBattleApp.Controllers
 
                     Session["partie"] = null;
 
-                    ViewBag.answer = "Bad Answers";
+                    TempData["message"] = "Bad Answers";
 
                     return RedirectToAction("Index", "Home");
                 }
