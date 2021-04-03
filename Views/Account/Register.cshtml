@@ -4,20 +4,20 @@
     ViewBag.Title = "Register";
 }
 
-<h2>English Battle Inscription</h2>
-
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="~/Content/register.css">
 
+<h1>English Battle Inscription</h1>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-<!-- Nom -->
-<div class="form-horizontal">
-    <h2 class="viewBagErreurInscription">@ViewBag.erreurInscription</h2>
+    <!-- Nom -->
+    <div class="form-horizontal">
+        <h2 class="viewBagErreurInscription">@ViewBag.erreurInscription</h2>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -97,8 +97,8 @@
                 <input type="submit" value="S'inscrire" class="btn btn-default" />
             </div>
         </div>
-</div>
-    }
+    </div>
+}
 
 <div id="actionLinkRegister">
     @Html.ActionLink("Connexion", "Index")
