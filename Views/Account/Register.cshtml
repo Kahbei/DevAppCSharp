@@ -67,11 +67,13 @@
         <!-- Niveau -->
         <div class="form-group">
             @Html.LabelFor(model => model.Niveau, htmlAttributes: new { @class = "control-label col-md-2" })
-            <select name="niveau" id="niveau-select">
-                <option value="1">Débutant</option>
-                <option value="2">Intermédiaire</option>
-                <option value="3">Expert</option>
-            </select>
+            <div class="niveau">
+                <select name="niveau" id="niveau-select">
+                    <option value="1">Débutant</option>
+                    <option value="2">Intermédiaire</option>
+                    <option value="3">Expert</option>
+                </select>
+            </div>
         </div>
 
         <!-- Villes -->
@@ -80,18 +82,20 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Ville, htmlAttributes: new { @class = "control-label col-md-2" })
-            @{
-                VilleService villeService = new VilleService(new EnglishBattle.data.EnglishBattleEntities());
-                List<Ville> ville = villeService.GetVilleList();
+            <div class="ville">
+                @{
+                    VilleService villeService = new VilleService(new EnglishBattle.data.EnglishBattleEntities());
+                    List<Ville> ville = villeService.GetVilleList();
 
-                @Html.DropDownListFor(n => n.Ville, new SelectList(ville, "id", "nom"));    //3h30 pour trouver ca
+                    @Html.DropDownListFor(n => n.Ville, new SelectList(ville, "id", "nom"));    //3h30 pour trouver ca
 
-            }
+                }
+            </div>
         </div>
 
         <!-- Bouton -->
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-offset-2 col-md-10 bouton">
                 <input type="submit" value="S'inscrire" class="btn btn-default" />
             </div>
         </div>

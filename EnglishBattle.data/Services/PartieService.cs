@@ -37,7 +37,7 @@ namespace EnglishBattle.data.Services
         {
             using (context)
             {
-                IQueryable<Partie> parties = from partie in context.Partie where partie.idJoueur == idJoueur orderby partie.score ascending select partie ;
+                IQueryable<Partie> parties = from partie in context.Partie where partie.idJoueur == idJoueur orderby partie.score descending select partie ;
 
                 return parties.FirstOrDefault();
             }

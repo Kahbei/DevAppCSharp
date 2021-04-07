@@ -1,44 +1,57 @@
 ﻿@model EnglishBattleApp.Models.QuestionViewModel
+@using EnglishBattle.data.Services
+@using EnglishBattle.data
 
 @{
     ViewBag.Title = "Question";
+    var joueur = (Joueur)Context.Session["joueur"];
+    if (joueur != null)
+    {
+        PartieService partieService = new PartieService(new EnglishBattleEntities());
+        Partie partie = partieService.GetPartieByJoueur(joueur.id);
+
+        <h1>ENGLISH BATTLE</h1>
+        <p>Utilisateur : @joueur.prenom . meilleur score : @partie.score verbes</p>
+        <h1>Question</h1>
+    }
+    else
+    {
+        Response.Redirect("../Account/index");
+    }
 }
-
-<h2>Question</h2>
-
 
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
+    @Html.AntiForgeryToken()    //mettre exception
 
-<div class="form-horizontal">
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <h4>@ViewBag.verbe</h4>
+        <h2>@ViewBag.verbe</h2>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Preterit, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Preterit, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Preterit, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Preterit, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Preterit, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Preterit, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ParticipePasse, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ParticipePasse, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ParticipePasse, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Valider" class="btn btn-default" />
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.ParticipePasse, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.ParticipePasse, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ParticipePasse, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Valider" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 }
 
 @section Scripts {
