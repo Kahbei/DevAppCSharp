@@ -86,7 +86,7 @@ namespace EnglishBattleApp.Controllers
                 Question fromSession = (Question)Session["questionInfo"];
                 Partie partie = (Partie)Session["partie"];
 
-                DateTime dateAnswer = DateTime.Parse(DateTime.Now.ToString("G"));
+                DateTime dateAnswer = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
                 // Objet Question qui va être insérer dans la base.
                 Question question = new Question
@@ -103,36 +103,36 @@ namespace EnglishBattleApp.Controllers
 
                 DateTime a = question.dateEnvoie;
                 DateTime b = (DateTime)question.dateReponse;
-                var c = b.Subtract(a).TotalSeconds;
+                Double c = b.Subtract(a).TotalSeconds;
                 TempData["mes"] = c;
 
 
                 // Check if the answers are good or not
-                if (isCorrectAnswers(question.idVerbe, question.reponsePreterit, question.reponseParticipePasse))
-                {
-                    TempData["message"] = "Good Answers";
+                //if (isCorrectAnswers(question.idVerbe, question.reponsePreterit, question.reponseParticipePasse))
+                //{
+                //    TempData["message"] = "Good Answers";
 
-                    partie.score++;
-                    partieService.UpdatePartie(partie);
+                //    partie.score++;
+                //    partieService.UpdatePartie(partie);
 
-                    if(partie.score % 5 == 0)
-                    {
-                        TempData["message"] = "Good Answer ! It was the " + partie.score + " in a row !";
+                //    if(partie.score % 5 == 0)
+                //    {
+                //        TempData["message"] = "Good Answer ! It was the " + partie.score + " in a row !";
 
-                        return RedirectToAction("Question", "Question");
-                    } 
-                    else if(partie.score == verbeService.GetVerbList().Count)
-                    {
-                        TempData["message"] = "C'est finis !";
+                //        return RedirectToAction("Question", "Question");
+                //    } 
+                //    else if(partie.score == verbeService.GetVerbList().Count)
+                //    {
+                //        TempData["message"] = "C'est finis !";
 
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Question", "Question");
-                    }
-                } 
-                else if (b.Subtract(a).TotalSeconds >= 60)
+                //        return RedirectToAction("Index", "Home");
+                //    }
+                //    else
+                //    {
+                //        return RedirectToAction("Question", "Question");
+                //    }
+                //} 
+                /*else*/ if (b.Subtract(a).TotalSeconds >= 60)
                 {
                     partieService.UpdatePartie(partie);
 
@@ -143,6 +143,30 @@ namespace EnglishBattleApp.Controllers
                     TempData["message"] = "You took too much time, more than 1mn !";
 
                     return RedirectToAction("Index", "Home");
+                } 
+                else if (isCorrectAnswers(question.idVerbe, question.reponsePreterit, question.reponseParticipePasse))
+                {
+                    TempData["message"] = "Good Answers";
+
+                    partie.score++;
+                    partieService.UpdatePartie(partie);
+
+                    if (partie.score % 5 == 0)
+                    {
+                        TempData["message"] = "Good Answer ! It was the " + partie.score + " in a row !";
+
+                        return RedirectToAction("Question", "Question");
+                    }
+                    else if (partie.score == verbeService.GetVerbList().Count)
+                    {
+                        TempData["message"] = "C'est finis !";
+
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Question", "Question");
+                    }
                 }
                 else
                 {
@@ -178,7 +202,7 @@ namespace EnglishBattleApp.Controllers
             Question question = new Question
             {
                 idPartie = partieID,
-                dateEnvoie = DateTime.Parse(DateTime.Now.ToString("G")),
+                dateEnvoie = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                 idVerbe = GetRandomVerb(),
             };
 
