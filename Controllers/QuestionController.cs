@@ -61,7 +61,7 @@ namespace EnglishBattleApp.Controllers
                 {
                     if(TempData["message"] != null)
                     {
-                        ViewBag.message = TempData["message"].ToString() +" "+ TempData["mes"].ToString();
+                        ViewBag.message = TempData["message"].ToString();
                     }
 
                     NewQuestion(partieEnCours.id);
@@ -103,36 +103,8 @@ namespace EnglishBattleApp.Controllers
 
                 DateTime a = question.dateEnvoie;
                 DateTime b = (DateTime)question.dateReponse;
-                Double c = b.Subtract(a).TotalSeconds;
-                TempData["mes"] = c;
 
-
-                // Check if the answers are good or not
-                //if (isCorrectAnswers(question.idVerbe, question.reponsePreterit, question.reponseParticipePasse))
-                //{
-                //    TempData["message"] = "Good Answers";
-
-                //    partie.score++;
-                //    partieService.UpdatePartie(partie);
-
-                //    if(partie.score % 5 == 0)
-                //    {
-                //        TempData["message"] = "Good Answer ! It was the " + partie.score + " in a row !";
-
-                //        return RedirectToAction("Question", "Question");
-                //    } 
-                //    else if(partie.score == verbeService.GetVerbList().Count)
-                //    {
-                //        TempData["message"] = "C'est finis !";
-
-                //        return RedirectToAction("Index", "Home");
-                //    }
-                //    else
-                //    {
-                //        return RedirectToAction("Question", "Question");
-                //    }
-                //} 
-                /*else*/ if (b.Subtract(a).TotalSeconds >= 60)
+                if (b.Subtract(a).TotalSeconds >= 60)
                 {
                     partieService.UpdatePartie(partie);
 
