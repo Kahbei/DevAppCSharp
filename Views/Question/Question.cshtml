@@ -28,7 +28,14 @@
 
 @using (Html.BeginForm())
 {
+    try
+    {
     @Html.AntiForgeryToken()    //mettre exception
+    }
+    catch
+    {
+        //rien
+    }
 
     <div class="form-horizontal">
         <hr />
