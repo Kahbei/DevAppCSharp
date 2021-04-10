@@ -1,0 +1,41 @@
+﻿@model EnglishBattleApp.Models.LoginViewModel
+@using EnglishBattle.data.Services
+@using EnglishBattle.data
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="~/Content/end.css" />
+
+@{
+    //ViewBag.Title = "End";
+    //ViewBag.End = "Félicitations ! Vous avez réussi à trouver le prétérit et le participe passé de tous les verbes irréguliers !";
+}
+
+@{
+//if (ViewBag.End == null)
+//{
+//    Response.Redirect("../Account/index");
+//}
+}
+
+
+<div class="d-flex justify-content-center">
+    <h1>FIN DE PARTIE !</h1>
+</div>
+
+<div class="d-flex justify-content-center">
+    <h3>Voulez-vous refaire une partie ?</h3>
+</div>
+
+<div class="d-flex justify-content-center">
+    <button type="button" class="btn btn-success" id="boutonOui" onclick="location.href='../Question/Question';"> Oui ! </button>
+    <button type="button" class="btn btn-danger" id="boutonNon" onclick="location.href='../Account/index';"> Non ! </button>
+</div>
+
+
+
+<!--
+    si une mauvaise réponse -> on affiche qu'il a perdu puis on lui demande s'il veut rejouer
+    toutes les réponses justes -> félicitation ! Tu veux rejouer ?
+-->

@@ -143,6 +143,7 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\end.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\question.css" />
     <Content Include="Content\register.css" />
@@ -282,6 +283,7 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Question\Question.cshtml" />
     <Content Include="Views\Account\Logout.cshtml" />
+    <Content Include="Views\Question\End.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

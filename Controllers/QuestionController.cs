@@ -152,9 +152,10 @@ namespace EnglishBattleApp.Controllers
                     Session["listVerb"] = null;
                     Session["questionInfo"] = null;
 
-                    TempData["message"] = "Bad Answers";
+                    TempData["message"] = "Bad Answer";
+                    ViewBag.End = "Mauvaise réponse ! Vous avez perdu !";
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("End", "Question");
                 }
 
             }
@@ -206,6 +207,11 @@ namespace EnglishBattleApp.Controllers
             Verbe verbe = verbeService.GetVerbItem(idVerb);
 
             return (preterit == verbe.participePasse && partpast == verbe.preterit) ? true : false ;
+        }
+
+        public ActionResult End()
+        {
+            return View();
         }
     }
 }
