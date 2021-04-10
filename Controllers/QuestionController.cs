@@ -12,6 +12,13 @@ namespace EnglishBattleApp.Controllers
 {
     public class QuestionController : Controller
     {
+        private List<int> listVerb = new List<int>();
+
+        // Services
+        private VerbeService verbeService = new VerbeService(new EnglishBattle.data.EnglishBattleEntities());
+        private PartieService partieService = new PartieService(new EnglishBattle.data.EnglishBattleEntities());
+        private QuestionService questionService = new QuestionService(new EnglishBattle.data.EnglishBattleEntities());
+
         public ActionResult Index()
         {
             return View();
@@ -28,8 +35,7 @@ namespace EnglishBattleApp.Controllers
                 // Si il n'y a pas eu de partie créer.
                 if( partieEnCours == null)
                 {
-                    // Appelle le service pour créer une nouvelle partie.
-                    PartieService partieService = new PartieService(new EnglishBattle.data.EnglishBattleEntities());
+                    // Création d'une nouvelle partie
                     Partie partie = new Partie
                     {
                         idJoueur = joueur.id,
@@ -38,7 +44,16 @@ namespace EnglishBattleApp.Controllers
             
                     partieService.InsertPartie(partie);
 
+                    for(int i = 1; i <= 150; i++)
+                    {
+                        listVerb.Add(i);
+                    }
+
+                    Session["listVerb"] = listVerb;
+                    partie.score = listVerb.Count;
+
                     Session["partie"] = partie;
+
 
                     NewQuestion(partie.id);
                 }
@@ -46,7 +61,7 @@ namespace EnglishBattleApp.Controllers
                 {
                     if(TempData["message"] != null)
                     {
-                        ViewBag.message = TempData["message"].ToString();
+                        ViewBag.message = TempData["message"].ToString() +" "+ TempData["mes"].ToString();
                     }
 
                     NewQuestion(partieEnCours.id);
@@ -65,12 +80,13 @@ namespace EnglishBattleApp.Controllers
             if (ModelState.IsValid)
             {
                 // Récupère les services
-                QuestionService questionService = new QuestionService(new EnglishBattle.data.EnglishBattleEntities());
-                PartieService partieService = new PartieService(new EnglishBattle.data.EnglishBattleEntities());
+                VerbeService verbeService = new VerbeService(new EnglishBattle.data.EnglishBattleEntities());
 
                 // Récupère de la valeur session contenant les informations à l'arrivée d'une question.
                 Question fromSession = (Question)Session["questionInfo"];
-                DateTime dateAnswer = DateTime.Now;
+                Partie partie = (Partie)Session["partie"];
+
+                DateTime dateAnswer = DateTime.Parse(DateTime.Now.ToString("G"));
 
                 // Objet Question qui va être insérer dans la base.
                 Question question = new Question
@@ -83,9 +99,13 @@ namespace EnglishBattleApp.Controllers
                     dateReponse = dateAnswer,
                 };
 
-                Partie partie = (Partie)Session["partie"];
-
                 questionService.InsertQuestion(question);
+
+                DateTime a = question.dateEnvoie;
+                DateTime b = (DateTime)question.dateReponse;
+                var c = b.Subtract(a).TotalSeconds;
+                TempData["mes"] = c;
+
 
                 // Check if the answers are good or not
                 if (isCorrectAnswers(question.idVerbe, question.reponsePreterit, question.reponseParticipePasse))
@@ -93,19 +113,44 @@ namespace EnglishBattleApp.Controllers
                     TempData["message"] = "Good Answers";
 
                     partie.score++;
+                    partieService.UpdatePartie(partie);
 
                     if(partie.score % 5 == 0)
                     {
                         TempData["message"] = "Good Answer ! It was the " + partie.score + " in a row !";
-                    }
 
-                    return RedirectToAction("Question", "Question");                    
+                        return RedirectToAction("Question", "Question");
+                    } 
+                    else if(partie.score == verbeService.GetVerbList().Count)
+                    {
+                        TempData["message"] = "C'est finis !";
+
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Question", "Question");
+                    }
+                } 
+                else if (b.Subtract(a).TotalSeconds >= 60)
+                {
+                    partieService.UpdatePartie(partie);
+
+                    Session["partie"] = null;
+                    Session["listVerb"] = null;
+                    Session["questionInfo"] = null;
+
+                    TempData["message"] = "You took too much time, more than 1mn !";
+
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
                     partieService.UpdatePartie(partie);
 
                     Session["partie"] = null;
+                    Session["listVerb"] = null;
+                    Session["questionInfo"] = null;
 
                     TempData["message"] = "Bad Answers";
 
@@ -128,23 +173,36 @@ namespace EnglishBattleApp.Controllers
 
         private void NewQuestion(int partieID)
         {
+
             // Initialise les données dès que la question s'affiche.
             Question question = new Question
             {
                 idPartie = partieID,
-                dateEnvoie = DateTime.Now,
+                dateEnvoie = DateTime.Parse(DateTime.Now.ToString("G")),
                 idVerbe = GetRandomVerb(),
             };
 
             Session["questionInfo"] = question;
 
-            VerbeService verbeService = new VerbeService(new EnglishBattle.data.EnglishBattleEntities());
+            List<int> verbList = (List<int>)Session["listVerb"];
+
+            if(verbList != null)
+            {
+                while (verbList.Contains(question.idVerbe))
+                {
+                    question.idVerbe = GetRandomVerb();
+                }
+            }
+
+            verbList.Add(question.idVerbe);
+
+            Session["listVerb"] = verbList;
+            
             ViewBag.verbe = verbeService.GetVerbItem(question.idVerbe).baseVerbale;
         }
 
         private bool isCorrectAnswers(int idVerb, string preterit, string partpast)
         {
-            VerbeService verbeService = new VerbeService(new EnglishBattle.data.EnglishBattleEntities());
             Verbe verbe = verbeService.GetVerbItem(idVerb);
 
             return (preterit == verbe.participePasse && partpast == verbe.preterit) ? true : false ;
