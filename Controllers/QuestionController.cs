@@ -44,7 +44,7 @@ namespace EnglishBattleApp.Controllers
             
                     partieService.InsertPartie(partie);
 
-                    for(int i = 1; i <= 150; i++)
+                    for(int i = 1; i <= 160; i++)
                     {
                         listVerb.Add(i);
                     }
@@ -131,9 +131,9 @@ namespace EnglishBattleApp.Controllers
                     }
                     else if (partie.score == verbeService.GetVerbList().Count)
                     {
-                        TempData["message"] = "C'est finis !";
+                        TempData["message"] = "Félicitations ! Vous avez réussi à trouver le prétérit et le participe passé de tous les verbes irréguliers !";
 
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("End", "Question");
                     }
                     else
                     {
@@ -148,8 +148,7 @@ namespace EnglishBattleApp.Controllers
                     Session["listVerb"] = null;
                     Session["questionInfo"] = null;
 
-                    TempData["message"] = "Bad Answer";
-                    ViewBag.End = "Mauvaise réponse ! Vous avez perdu !";
+                    TempData["message"] = "Mauvaise réponse ! Vous avez perdu !";
 
                     return RedirectToAction("End", "Question");
                 }
@@ -207,6 +206,11 @@ namespace EnglishBattleApp.Controllers
 
         public ActionResult End()
         {
+            if (TempData["message"] != null)
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
+
             return View();
         }
     }
