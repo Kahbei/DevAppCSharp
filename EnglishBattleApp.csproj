@@ -145,6 +145,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\end.css" />
     <Content Include="Content\login.css" />
+    <Content Include="Content\mp3\MKThemeSong.mp3" />
     <Content Include="Content\question.css" />
     <Content Include="Content\register.css" />
     <Content Include="favicon.ico" />
