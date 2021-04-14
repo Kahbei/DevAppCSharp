@@ -51,7 +51,9 @@ namespace EnglishBattle.data.Services
         {
             using (context)
             {
-                return context.Partie.ToList();
+                IQueryable<Partie> parties = (from partie in context.Partie orderby partie.score descending select partie).Take(10);
+
+                return parties.ToList();
             }
         }
 

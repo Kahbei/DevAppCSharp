@@ -45,7 +45,25 @@
 }
 
 @*<div>
-    @Html.ActionLink("Inscription", "Register")
-</div>*@
+        @Html.ActionLink("Inscription", "Register")
+    </div>*@
 
 <!-- Hall of Fame -->
+</br>
+<h2>-- Hall of Fame --</h2>
+</br>
+@using EnglishBattle.data.Services
+@using EnglishBattle.data
+
+@{
+    PartieService partieService = new PartieService(new EnglishBattle.data.EnglishBattleEntities());
+    List<Partie> partie = partieService.GetPartieList();
+
+    foreach (Partie unePartie in partie)
+    {
+        JoueurService js = new JoueurService(new EnglishBattle.data.EnglishBattleEntities());
+        Joueur joueur = js.GetJoueur(unePartie.idJoueur);
+
+        <p>@unePartie.score - @joueur.nom @joueur.prenom</p>
+    }
+}
