@@ -20,8 +20,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 @{
-                    var joueur = (Joueur)Context.Session["joueur"];
-                    Partie partie = (Partie)Context.Session["partie"];
+                    Joueur joueur = (Joueur)Context.Session["joueur"];
 
                     if (joueur == null)
                     {
@@ -29,13 +28,15 @@
                     }
                     else
                     {
-                        <li class="nav-item"><span class="navbar-text">Good evening @joueur.nom @joueur.prenom</span></li>
+                        <li class="nav-item"><span class="navbar-text">Bienvenue @joueur.prenom  @joueur.nom</span></li>
                         <li class="nav-item">@Html.ActionLink("Question", "Question", "Question", new { area = "" }, new { @class = "nav-link" })</li>
                         <li class="nav-item">@Html.ActionLink("Déconnexion", "Logout", "Account", new { area = "" }, new { @class = "nav-link" })</li>
                     }
                 }
             </ul>
             @{
+                Partie partie = (Partie)Context.Session["partie"];
+
                 if (partie != null)
                 {
                     <li class="nav-item"><span class="navbar-text">Score : @partie.score</span></li>
