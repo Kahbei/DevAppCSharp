@@ -74,8 +74,8 @@
     foreach (Partie unePartie in partie)
     {
         JoueurService js = new JoueurService(new EnglishBattle.data.EnglishBattleEntities());
-        Joueur joueur = js.GetJoueur(unePartie.idJoueur);
+        Joueur bestPlayer = js.GetJoueur(unePartie.idJoueur);
 
-        <p>@unePartie.score - @joueur.nom @joueur.prenom</p>
+        <p>@unePartie.score - @bestPlayer.nom @bestPlayer.prenom</p>
     }
 }
