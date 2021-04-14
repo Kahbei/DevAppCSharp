@@ -113,6 +113,8 @@ namespace EnglishBattleApp.Controllers
 
                     TempData["message"] = "You took too much time, more than 1mn !";
 
+                    Session["numQuest"] = 0;
+
                     // Redirection sur la page final
                     return RedirectToAction("End", "Question");
                 } 
@@ -156,6 +158,7 @@ namespace EnglishBattleApp.Controllers
                     Session["partie"] = null;
                     Session["listVerb"] = new List<int>();
                     Session["questionInfo"] = null;
+                    Session["numQuest"] = 0;
 
                     TempData["message"] = "Mauvaise réponse ! Vous avez perdu !";
 

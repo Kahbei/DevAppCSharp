@@ -50,61 +50,65 @@
                         </div>
                     </div>
 
-            </div>
-        }
-    }
-    else
-    {
-        <h1>READY FOR THE RUMBLE !!</h1>
-    }
-}
-
-@*<div>
-        @Html.ActionLink("Inscription", "Register")
-    </div>*@
-
-<!-- Hall of Fame -->
-<section class="mt-5">
-    <h1>The top 10 best parties</h1>
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Rank</th>
-                <th scope="col">Score</th>
-                <th scope="col">Finish</th>
-                <th scope="col">Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                PartieService partieService = new PartieService(new EnglishBattle.data.EnglishBattleEntities());
-                List<Partie> partie = partieService.GetPartieList();
-                int i = 1;
-
-                foreach (Partie unePartie in partie)
-                {
-                    JoueurService js = new JoueurService(new EnglishBattle.data.EnglishBattleEntities());
-                    Joueur bestPlayer = js.GetJoueur(unePartie.idJoueur);
-
-                    <tr>
-                        <th scope="row">@i</th>
-                        <th>@unePartie.score</th>
-                        @{
-                            if (@unePartie.score == 161)
-                            {
-                                <th><i class="bi bi-star-fill"></i></th>
-                            }
-                            else
-                            {
-                                <th> - </th>
-                            }
-                        }
-                        <th>@bestPlayer.nom @bestPlayer.prenom</th>
-                    </tr>
-
-                    i++;
-                }
+                </div>
             }
-        </tbody>
-    </table>
-</section>
+        }
+        else
+        {
+            <h1>READY FOR THE RUMBLE !!</h1>
+
+            var numQuest = Session["numQuest"];
+
+        }
+
+    }
+
+    @*<div>
+            @Html.ActionLink("Inscription", "Register")
+        </div>*@
+
+    <!-- Hall of Fame -->
+    <section class="mt-5">
+        <h1>The top 10 best parties</h1>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Rank</th>
+                    <th scope="col">Score</th>
+                    <th scope="col">Finish</th>
+                    <th scope="col">Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    PartieService partieService = new PartieService(new EnglishBattle.data.EnglishBattleEntities());
+                    List<Partie> partie = partieService.GetPartieList();
+                    int i = 1;
+
+                    foreach (Partie unePartie in partie)
+                    {
+                        JoueurService js = new JoueurService(new EnglishBattle.data.EnglishBattleEntities());
+                        Joueur bestPlayer = js.GetJoueur(unePartie.idJoueur);
+
+                        <tr>
+                            <th scope="row">@i</th>
+                            <th>@unePartie.score</th>
+                            @{
+                                if (@unePartie.score == 161)
+                                {
+                                    <th><i class="bi bi-star-fill"></i></th>
+                                }
+                                else
+                                {
+                                    <th> - </th>
+                                }
+                            }
+                            <th>@bestPlayer.nom @bestPlayer.prenom</th>
+                        </tr>
+
+                        i++;
+                    }
+                }
+            </tbody>
+        </table>
+    </section>

@@ -8,21 +8,26 @@
 <link rel="stylesheet" type="text/css" href="~/Content/question.css" />
 
 @{
-    int n = 1;
     ViewBag.Title = "Question";
+    int compteur = Convert.ToInt32(Session["numQuest"]);
     var joueur = (Joueur)Context.Session["joueur"];
     if (joueur != null)
     {
+        compteur++;
+        Session["numQuest"] = compteur;
+
         PartieService partieService = new PartieService(new EnglishBattleEntities());
         Partie partie = partieService.GetPartieByJoueur(joueur.id);
 
+
         <h1>ENGLISH BATTLE</h1>
         <h2>Utilisateur : @joueur.prenom, meilleur score : @partie.score verbes</h2>
-        <h1>Question @n : le verbe @ViewBag.verbe</h1>
+        <h1>Question @Session["numQuest"] : le verbe @ViewBag.verbe</h1>
     }
     else
     {
         Response.Redirect("../Account/index");
+        
     }
 }
 
@@ -30,7 +35,7 @@
 {
     try
     {
-    @Html.AntiForgeryToken()    //mettre exception
+        @Html.AntiForgeryToken() //mettre exception
     }
     catch
     {
