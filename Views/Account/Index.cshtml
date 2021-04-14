@@ -2,13 +2,8 @@
 @using EnglishBattle.data
 @using EnglishBattle.data.Services
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="~/Content/login.css" />
-
 <section class="loginSection">
-    <h1>Bienvenue sur English Battle !</h1>
+    <h1 class="text-center mb-4">Bienvenue sur English Battle !</h1>
 
     @{
         Joueur joueur = (Joueur)Context.Session["joueur"];
@@ -26,7 +21,7 @@
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                         <div class="form-group d-flex">
-                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "col-2" })
 
                             <div class="w-50">
                                 @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
@@ -35,7 +30,7 @@
                         </div>
 
                         <div class="form-group d-flex">
-                            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-2" })
 
                             <div class="w-50">
                                 @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
@@ -44,10 +39,8 @@
                         </div>
                     </div>
 
-                    <div class="form-group my-4 btnSubmit">
-                        <div>
-                            <input type="submit" value="Connexion" class="btn btn-lg btn-dark" />
-                        </div>
+                    <div class="form-group my-4 d-flex justify-content-center">
+                        <input type="submit" value="Connexion" class="btn btn-lg btn-dark" />
                     </div>
 
                 </div>
@@ -55,13 +48,12 @@
         }
         else
         {
-            <h1>READY FOR THE RUMBLE !!</h1>
-
             var numQuest = Session["numQuest"];
-
         }
 
     }
+
+</section>
 
     @*<div>
             @Html.ActionLink("Inscription", "Register")
@@ -69,7 +61,7 @@
 
     <!-- Hall of Fame -->
     <section class="mt-5">
-        <h1>The top 10 best parties</h1>
+        <h1 class="text-center mb-4">The top 10 best parties</h1>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
