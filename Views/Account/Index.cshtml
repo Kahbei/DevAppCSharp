@@ -1,81 +1,111 @@
 ﻿@model EnglishBattleApp.Models.LoginViewModel
 @using EnglishBattle.data
+@using EnglishBattle.data.Services
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="~/Content/login.css" />
 
-<h1>Bienvenue sur English Battle !</h1>
+<section class="loginSection">
+    <h1>Bienvenue sur English Battle !</h1>
 
-@{
-    Joueur joueur = (Joueur)Context.Session["joueur"];
+    @{
+        Joueur joueur = (Joueur)Context.Session["joueur"];
 
-    if (joueur == null)
-    {
-        using (Html.BeginForm())
+        if (joueur == null)
         {
-            @Html.AntiForgeryToken()
+            using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
 
-            <div class="form-horizontal">
-                <h2 class="viewBagErreurConnexion">@ViewBag.erreurConnexion</h2>
+                <div class="form-horizontal d-flex flex-column">
+                    <h2 class="viewBagErreurConnexion">@ViewBag.erreurConnexion</h2>
 
-                <div class="centrer">
-
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="form-group">
                     <div>
-                        <input type="submit" value="Connexion" class="btn btn-default" />
-                    </div>
-                </div>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            </div>
+                        <div class="form-group d-flex">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                            <div class="w-50">
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group d-flex">
+                            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                            <div class="w-50">
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group my-4 btnSubmit">
+                        <div>
+                            <input type="submit" value="Connexion" class="btn btn-lg btn-dark" />
+                        </div>
+                    </div>
+
+                </div>
+            }
+        }
+        else
+        {
+            <h1>READY FOR THE RUMBLE !!</h1>
         }
     }
-    else
-    {
-        <h1>ENGLISH BATTLE !!! TUTUTUTU TU TU TU TU !</h1>
-    }
-}
+</section>
 
 @*<div>
         @Html.ActionLink("Inscription", "Register")
     </div>*@
 
 <!-- Hall of Fame -->
-</br>
-<h2>-- Hall of Fame --</h2>
-</br>
-@using EnglishBattle.data.Services
-@using EnglishBattle.data
+<section class="mt-5">
+    <h1>The top 10 best parties</h1>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Rank</th>
+                <th scope="col">Score</th>
+                <th scope="col">Finish</th>
+                <th scope="col">Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                PartieService partieService = new PartieService(new EnglishBattle.data.EnglishBattleEntities());
+                List<Partie> partie = partieService.GetPartieList();
+                int i = 1;
 
-@{
-    PartieService partieService = new PartieService(new EnglishBattle.data.EnglishBattleEntities());
-    List<Partie> partie = partieService.GetPartieList();
+                foreach (Partie unePartie in partie)
+                {
+                    JoueurService js = new JoueurService(new EnglishBattle.data.EnglishBattleEntities());
+                    Joueur bestPlayer = js.GetJoueur(unePartie.idJoueur);
 
-    foreach (Partie unePartie in partie)
-    {
-        JoueurService js = new JoueurService(new EnglishBattle.data.EnglishBattleEntities());
-        Joueur bestPlayer = js.GetJoueur(unePartie.idJoueur);
+                    <tr>
+                        <th scope="row">@i</th>
+                        <th>@unePartie.score</th>
+                        @{
+                            if (@unePartie.score == 161)
+                            {
+                                <th><i class="bi bi-star-fill"></i></th>
+                            }
+                            else
+                            {
+                                <th> - </th>
+                            }
+                        }
+                        <th>@bestPlayer.nom @bestPlayer.prenom</th>
+                    </tr>
 
-        <p>@unePartie.score - @bestPlayer.nom @bestPlayer.prenom</p>
-    }
-}
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+</section>

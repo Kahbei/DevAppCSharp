@@ -1,20 +1,18 @@
-﻿#Email{
-    width: 480px;
-}
-
-#Password {
-    width: 480px;
-}
-
-.centrer {
-    padding-left: 14%;
-}
-
-.viewBagErreurConnexion {
+﻿.viewBagErreurConnexion {
     font-size: 20px;
     color: red;
 }
 
-body{
+.loginSection{
+    margin-bottom: 8rem !important;
+}
+
+section h1{
     text-align: center;
+    margin: 2rem 0 4rem 0;
+}
+
+.btnSubmit{
+    display: flex;
+    justify-content: center;
 }
